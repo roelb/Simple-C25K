@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, ListViewDynamicActivity!</string>
+    <string name="app_name">Simple C25K</string>
+    <string name="ok_icon">ok_icon</string>
+
+</resources>
