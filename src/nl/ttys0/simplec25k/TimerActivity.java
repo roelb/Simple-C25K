@@ -22,7 +22,6 @@
  * Class to control the ProgramService from a GUI.
  */
 
-
 package nl.ttys0.simplec25k;
 
 import java.util.HashMap;
@@ -58,6 +57,7 @@ public class TimerActivity extends Activity {
 	private Button button;
 	private AlertDialog.Builder startedAlertbox;
 	private AlertDialog.Builder completedAlertbox;
+	private AlertDialog.Builder stopAlertbox;
 
 	// selected from main
 	public static String selectedProgram;
@@ -66,12 +66,13 @@ public class TimerActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.timer);
-		
-		//Ask service if it's running, if so we'll receive a message with the right values for the gui.
-	//	Intent myIntent = new Intent();
-//		myIntent.setAction(MY_ACTION);
-	//	myIntent.putExtra("DATA_TO_PS", "ARE_YOU_RUNNING");
-		//sendBroadcast(myIntent);
+
+		// Ask service if it's running, if so we'll receive a message with the
+		// right values for the gui.
+		// Intent myIntent = new Intent();
+		// myIntent.setAction(MY_ACTION);
+		// myIntent.putExtra("DATA_TO_PS", "ARE_YOU_RUNNING");
+		// sendBroadcast(myIntent);
 
 		// setup descriptions
 		hashMap.put(
@@ -125,7 +126,7 @@ public class TimerActivity extends Activity {
 				"w6d2",
 				"Brisk five-minute warmup walk, then:\nJog 10 minutes\nWalk 3 minutes\nJog 10 minutes");
 		hashMap.put("w6d3",
-				"Brisk five-minute warmup walk, then jog 25 minutes with no walking.");
+				"Brisk five-minute warmup walk, then jog 22 minutes with no walking.");
 		hashMap.put("w7d1",
 				"Brisk five-minute warmup walk, then jog 25 minutes.");
 		hashMap.put("w7d2",
@@ -148,7 +149,6 @@ public class TimerActivity extends Activity {
 		TimerActivity.context = this;
 
 		setupAlertboxes();
-		
 
 		// Register BroadcastReceiver
 		// to receive event from our service
@@ -198,11 +198,11 @@ public class TimerActivity extends Activity {
 	protected void onResume() {
 
 		super.onResume();
-		
+
 	}
-	
+
 	@Override
-	protected void onDestroy(){
+	protected void onDestroy() {
 		unregisterReceiver(myReceiver);
 		super.onDestroy();
 	}
@@ -263,12 +263,7 @@ public class TimerActivity extends Activity {
 	// stop button
 	View.OnClickListener mStopListener = new OnClickListener() {
 		public void onClick(View v) {
-			Intent myIntent = new Intent();
-			myIntent.setAction(MY_ACTION);
-			myIntent.putExtra("DATA_TO_PS", "STOP");
-			sendBroadcast(myIntent);
-
-			finish();
+			stopAlertbox.show();
 		}
 	};
 
@@ -277,15 +272,7 @@ public class TimerActivity extends Activity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 
-			// send stop to ps
-			Intent myIntent = new Intent();
-			myIntent.setAction(MY_ACTION);
-			myIntent.putExtra("DATA_TO_PS", "STOP");
-			sendBroadcast(myIntent);
-
-			// stop the program service
-
-			finish();
+			stopAlertbox.show();
 		}
 		return super.onKeyDown(keyCode, event);
 	}
@@ -323,7 +310,29 @@ public class TimerActivity extends Activity {
 						finish();
 					}
 				});
-		// /
+
+		stopAlertbox = new AlertDialog.Builder(this);
+		stopAlertbox
+				.setMessage("Are you sure you want to exit?")
+				.setCancelable(false)
+				.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								// send STOP signal
+								Intent myIntent = new Intent();
+								myIntent.setAction(MY_ACTION);
+								myIntent.putExtra("DATA_TO_PS", "STOP");
+								sendBroadcast(myIntent);
+
+								// stop this activity
+								finish();
+							}
+						})
+				.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
 
 	}
 
@@ -353,8 +362,7 @@ public class TimerActivity extends Activity {
 					countdown.start();
 
 				}
-				
-	
+
 			}
 
 		}

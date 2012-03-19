@@ -303,9 +303,9 @@ public class ProgramService extends Service {
 					countdown(600, 500, "Jogging", "Jog for ");
 
 			} else if (selectedProgram.equals("w6d3")) {
-				// jogging 25m
+				// jogging 22m
 				if (running)
-					countdown(1500, 500, "Jogging", "Jog for ");
+					countdown(1320, 500, "Jogging", "Jog for ");
 
 			}
 
@@ -347,7 +347,6 @@ public class ProgramService extends Service {
 	// ============================================================
 	// END OF ROUTINES
 	// ============================================================
-
 
 	private void workoutFinished() {
 		WorkoutFileEditor wfe = new WorkoutFileEditor(this);

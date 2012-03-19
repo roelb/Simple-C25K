@@ -61,8 +61,6 @@ public class Simplec25kMainActivity extends ListActivity {
 		super.onCreate(icicle);
 		setContentView(R.layout.main);
 		setListAdapter(new IconicAdapter());
-		selection = (TextView) findViewById(R.id.selection);
-		registerForContextMenu(selection);
 
 		ProgressDialog dialog = ProgressDialog.show(
 				Simplec25kMainActivity.this, "", "Loading. Please wait...",
@@ -113,7 +111,6 @@ public class Simplec25kMainActivity extends ListActivity {
 
 	// When a choice is made
 	public void onListItemClick(ListView parent, View v, int position, long id) {
-		selection.setText(programStringArr[position]);
 
 		selectedProgram = programStringArr[position];
 
