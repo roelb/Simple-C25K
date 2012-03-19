@@ -120,7 +120,7 @@ public class ProgramService extends Service {
 	}
 
 	// ============================================================
-	// WORKOUT
+	// ROUTINES
 	// ============================================================
 
 	private void startWorkout() {
@@ -344,6 +344,11 @@ public class ProgramService extends Service {
 		workoutFinished();
 	}
 
+	// ============================================================
+	// END OF ROUTINES
+	// ============================================================
+
+
 	private void workoutFinished() {
 		WorkoutFileEditor wfe = new WorkoutFileEditor(this);
 
@@ -390,10 +395,6 @@ public class ProgramService extends Service {
 		this.stopSelf();
 
 	}
-
-	// ============================================================
-	// END OF WORKOUT
-	// ============================================================
 
 	// counts down and sends message
 	// 'time' in seconds, 'interval' in ms
