@@ -143,7 +143,7 @@ public class ProgramService extends Service {
 			for (int i = 0; i < 6; i++) {
 				// jogging 60s
 				if (running)
-					countdown(60, 500, "Jogging", "Joog for ");
+					countdown(60, 500, "Jogging", "Jog for ");
 				// walking 90s
 				if (running)
 					countdown(90, 500, "Walking", "Walk for ");
