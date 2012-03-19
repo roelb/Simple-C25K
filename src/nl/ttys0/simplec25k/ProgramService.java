@@ -1,8 +1,22 @@
-/* 
- * Author: Roel Blaauwgeers
- * 13-03-2012
+/*
+ * ProgramService.java
  * 
- * Changelog:
+ * Copyright 2012 Roel Blaauwgeers <rs.blaauwgeers@gmail.com>
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
  * 
  */
 
@@ -33,7 +47,7 @@ public class ProgramService extends Service {
 	Thread workoutThread;
 
 	WakeLock mWakeLock;
-	
+
 	Boolean finished = false;
 
 	static final String SCHEDULEFILE = "schedule";
@@ -68,8 +82,8 @@ public class ProgramService extends Service {
 
 		// Toast.makeText(this, "program Service Started", Toast.LENGTH_LONG)
 		// .show();
-		//Log.d(TAG, "onCreate");
-		
+		// Log.d(TAG, "onCreate");
+
 		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
 		mWakeLock.acquire();
@@ -80,10 +94,10 @@ public class ProgramService extends Service {
 	public void onDestroy() {
 		// Toast.makeText(this, "program Service destroyed", Toast.LENGTH_LONG)
 		// .show();
-		//Log.d(TAG, "onDestroy");
+		// Log.d(TAG, "onDestroy");
 
 		mWakeLock.release();
-		
+
 		workoutThread.interrupt();
 		unregisterReceiver(myReceiver);
 		super.onDestroy();
@@ -135,8 +149,8 @@ public class ProgramService extends Service {
 					countdown(90, 500, "Walking", "Walk for ");
 			}
 		}
-		
-		//w2
+
+		// w2
 		else if (selectedProgram.contains("w2")) {
 			// warmup 5m
 			if (running)
@@ -151,12 +165,12 @@ public class ProgramService extends Service {
 				if (running)
 					countdown(120, 500, "Walking", "Walk for ");
 			}
-			//fill one more minute 'cause 4*3.5=14
-			if(running)
+			// fill one more minute 'cause 4*3.5=14
+			if (running)
 				countdown(60, 500, "Jogging", "Jog for ");
 		}
-		
-		//w3
+
+		// w3
 		else if (selectedProgram.contains("w3")) {
 			// warmup 5m
 			if (running)
@@ -178,45 +192,44 @@ public class ProgramService extends Service {
 					countdown(180, 500, "Walking", "Walk for ");
 			}
 		}
-		
-		//w4
+
+		// w4
 		else if (selectedProgram.contains("w4")) {
 			// warmup 5m
 			if (running)
 				countdown(5 * 60, 500, "Warmup", "Warmup: Brisk walk for ");
 
-				// jogging 3m
-				if (running)
-					countdown(180, 500, "Jogging", "Jog for ");
-				// walking 90s
-				if (running)
-					countdown(90, 500, "Walking", "Walk for ");
-				// jogging 5m
-				if (running)
-					countdown(300, 500, "Jogging", "Jog for ");
-				// walking 2.5m
-				if (running)
-					countdown(150, 500, "Walking", "Walk for ");
-				// jogging 3m
-				if (running)
-					countdown(180, 500, "Jogging", "Jog for ");
-				// walking 90s
-				if (running)
-					countdown(90, 500, "Walking", "Walk for ");
-				// jogging 5m
-				if (running)
-					countdown(300, 500, "Jogging", "Jog for ");
+			// jogging 3m
+			if (running)
+				countdown(180, 500, "Jogging", "Jog for ");
+			// walking 90s
+			if (running)
+				countdown(90, 500, "Walking", "Walk for ");
+			// jogging 5m
+			if (running)
+				countdown(300, 500, "Jogging", "Jog for ");
+			// walking 2.5m
+			if (running)
+				countdown(150, 500, "Walking", "Walk for ");
+			// jogging 3m
+			if (running)
+				countdown(180, 500, "Jogging", "Jog for ");
+			// walking 90s
+			if (running)
+				countdown(90, 500, "Walking", "Walk for ");
+			// jogging 5m
+			if (running)
+				countdown(300, 500, "Jogging", "Jog for ");
 
 		}
-		
-		
-		//w5
+
+		// w5
 		else if (selectedProgram.contains("w5")) {
 			// warmup 5m
 			if (running)
 				countdown(5 * 60, 500, "Warmup", "Warmup: Brisk walk for ");
-			
-			if(selectedProgram.equals("w5d1")){
+
+			if (selectedProgram.equals("w5d1")) {
 				// jogging 5m
 				if (running)
 					countdown(300, 500, "Jogging", "Jog for ");
@@ -232,11 +245,10 @@ public class ProgramService extends Service {
 				// jogging 5m
 				if (running)
 					countdown(300, 500, "Jogging", "Jog for ");
-				
-				
+
 			}
-			
-			if(selectedProgram.equals("w5d2")){
+
+			if (selectedProgram.equals("w5d2")) {
 				// jogging 8m
 				if (running)
 					countdown(480, 500, "Jogging", "Jog for ");
@@ -247,22 +259,22 @@ public class ProgramService extends Service {
 				if (running)
 					countdown(480, 500, "Jogging", "Jog for ");
 			}
-			
-			if(selectedProgram.equals("w5d3")){
+
+			if (selectedProgram.equals("w5d3")) {
 				// jogging 20m
 				if (running)
 					countdown(1200, 500, "Jogging", "Jog for ");
-				
+
 			}
 		}
-		
-		//w6
+
+		// w6
 		else if (selectedProgram.contains("w6")) {
 			// warmup 5m
 			if (running)
 				countdown(5 * 60, 500, "Warmup", "Warmup: Brisk walk for ");
-			
-			if(selectedProgram.equals("w6d1")){
+
+			if (selectedProgram.equals("w6d1")) {
 				// jogging 5m
 				if (running)
 					countdown(300, 500, "Jogging", "Jog for ");
@@ -278,9 +290,8 @@ public class ProgramService extends Service {
 				// jogging 5m
 				if (running)
 					countdown(300, 500, "Jogging", "Jog for ");
-				
-			}
-			else if(selectedProgram.equals("w6d2")){
+
+			} else if (selectedProgram.equals("w6d2")) {
 				// jogging 10m
 				if (running)
 					countdown(600, 500, "Jogging", "Jog for ");
@@ -290,17 +301,16 @@ public class ProgramService extends Service {
 				// jogging 10m
 				if (running)
 					countdown(600, 500, "Jogging", "Jog for ");
-				
-			}
-			else if(selectedProgram.equals("w6d3")){
+
+			} else if (selectedProgram.equals("w6d3")) {
 				// jogging 25m
 				if (running)
 					countdown(1500, 500, "Jogging", "Jog for ");
-				
+
 			}
-			
+
 		}
-		
+
 		else if (selectedProgram.contains("w7")) {
 			// warmup 5m
 			if (running)
@@ -308,9 +318,9 @@ public class ProgramService extends Service {
 			// jogging 25m
 			if (running)
 				countdown(1500, 500, "Jogging", "Jog for ");
-				
+
 		}
-		
+
 		else if (selectedProgram.contains("w8")) {
 			// warmup 5m
 			if (running)
@@ -318,10 +328,9 @@ public class ProgramService extends Service {
 			// jogging 28m
 			if (running)
 				countdown(1680, 500, "Jogging", "Jog for ");
-				
+
 		}
-		
-		
+
 		// w9d3
 		else if (selectedProgram.contains("w9")) {
 			// warmup 5m
@@ -362,7 +371,7 @@ public class ProgramService extends Service {
 			// update file
 			String s = wfe.ReadSettings(SCHEDULEFILE);
 			s = s.replace(selectedProgram + ";false", selectedProgram + ";true");
-			
+
 			wfe.WriteSettings(SCHEDULEFILE, s, MODE_PRIVATE);
 
 			// alert main to update its array
@@ -403,12 +412,12 @@ public class ProgramService extends Service {
 
 		// set alarm
 		startTimer(time * 1000, 0, "");
-		
-		
-		//Send data for the GUI
+
+		// Send data for the GUI
 		Intent myIntent = new Intent();
 		myIntent.setAction(MY_ACTION);
-		myIntent.putExtra("DATA_TO_TA", "SET_CURRENT;" + workout + ";" + (time*1000));
+		myIntent.putExtra("DATA_TO_TA", "SET_CURRENT;" + workout + ";"
+				+ (time * 1000));
 		sendBroadcast(myIntent);
 
 		// dialog.cancel();
@@ -450,8 +459,9 @@ public class ProgramService extends Service {
 				stopTimer(pi);
 
 				sendNotification("Paused", message + "-Paused-");
-				
-				//myIntent.putExtra("DATA_TO_TA", "SET_CURRENT;" + workout + ";" + (msUntilFinished));
+
+				// myIntent.putExtra("DATA_TO_TA", "SET_CURRENT;" + workout +
+				// ";" + (msUntilFinished));
 
 				// wait for resume
 				while (paused) {
@@ -467,11 +477,12 @@ public class ProgramService extends Service {
 						e.printStackTrace();
 					}
 				}
-				
-				//reset gui elements
-				//Send data for the GUI
+
+				// reset gui elements
+				// Send data for the GUI
 				myIntent.setAction(MY_ACTION);
-				myIntent.putExtra("DATA_TO_TA", "SET_CURRENT;" + workout + ";" + (msUntilFinished));
+				myIntent.putExtra("DATA_TO_TA", "SET_CURRENT;" + workout + ";"
+						+ (msUntilFinished));
 				sendBroadcast(myIntent);
 
 				// set alarm again with the last known resulting time
@@ -537,8 +548,7 @@ public class ProgramService extends Service {
 		CharSequence contentText = s;
 
 		// define the actions to perform when user touch the notification
-		Intent launchApp = new Intent(this,
-				TimerActivity.class);
+		Intent launchApp = new Intent(this, TimerActivity.class);
 		// launchApp.putExtra("com.xxxxxxx.xxxxxxxxx.bean.Item",
 		// "anyObjectYouWant");
 
@@ -546,8 +556,8 @@ public class ProgramService extends Service {
 		PendingIntent launchNotification = PendingIntent.getActivity(
 				getApplicationContext(), 0, launchApp, 0);
 
-		notification.setLatestEventInfo(getApplicationContext(), contentTitle, contentText,
-				launchNotification);
+		notification.setLatestEventInfo(getApplicationContext(), contentTitle,
+				contentText, launchNotification);
 
 		startForeground(1337, notification);
 	}
@@ -598,12 +608,12 @@ public class ProgramService extends Service {
 
 			// here we can receive commands from timerActivity
 
-			//Toast.makeText(
-				//	ProgramService.this,
-					//"ProgramService: Triggered\n" + "Data passed: "
-						//	+ String.valueOf(datapassed) + "\n"
-							//+ "original Data: " + orgData, Toast.LENGTH_LONG)
-					//.show();
+			// Toast.makeText(
+			// ProgramService.this,
+			// "ProgramService: Triggered\n" + "Data passed: "
+			// + String.valueOf(datapassed) + "\n"
+			// + "original Data: " + orgData, Toast.LENGTH_LONG)
+			// .show();
 
 			if (orgData != null) {
 				if (orgData.equals("PAUSE"))

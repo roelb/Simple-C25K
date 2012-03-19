@@ -1,12 +1,27 @@
-/* 
+/*
+ * MyAlarmService.java
+ * 
+ * Copyright 2012 Blaauwgeers <rs.blaauwgeers@gmail.com>
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ * 
+ *
+ * info:
  * This Class is used for setting an alarm. When the alarm goes of a defined message
  * (MESSAGE) will be send to the notification bar.
- * 
- * Author: Roel Blaauwgeers
- * 13-03-2012
- * 
- * Changelog:
- * 
  */
 
 package nl.ttys0.simplec25k;
@@ -51,7 +66,7 @@ public class MyAlarmService extends Service {
 
 		// retrieve workout info
 		// This needs to be in onStart to be able to retrieve the data
-		message = intent.getStringExtra("MESSAGE"); //not needed... for now
+		message = intent.getStringExtra("MESSAGE"); // not needed... for now
 
 		MediaPlayer mp = MediaPlayer.create(MyAlarmService.this, R.raw.beep);
 		mp.start();
