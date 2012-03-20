@@ -2,6 +2,7 @@
 
 package nl.ttys0.simplec25k;
 
+import android.content.Context;
 import android.content.Intent;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
@@ -22,8 +23,9 @@ public class MyPhoneStateListener extends PhoneStateListener {
    			Intent myIntent = new Intent();
    			myIntent.setAction(MY_ACTION);
    			myIntent.putExtra("DATA_TO_PS", "PAUSE");
-   			if(myIntent!=null)
-   				TimerActivity.context.sendBroadcast(myIntent);
+   			Context context = TimerActivity.context;
+   			if(context!=null)
+   				context.sendBroadcast(myIntent);
    			
    			TimerActivity.countdown.stop();
         	break;

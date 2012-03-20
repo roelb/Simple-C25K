@@ -157,7 +157,13 @@ public class TimerActivity extends Activity {
 		intentFilter.addAction(ProgramService.MY_ACTION);
 		registerReceiver(myReceiver, intentFilter);
 
+		//get the selected program. If selected program is null it probably means the main activity is killed. Therefore we start a new main activity and kill the current timerActivity. It woul probably be better if this variable would be set the first time starting this activity. But this works for now
 		selectedProgram = Simplec25kMainActivity.selectedProgram;
+		if (selectedProgram == null){
+			Intent myIntent = new Intent(this, Simplec25kMainActivity.class);
+			startActivityForResult(myIntent, 0);
+			finish();
+		}
 
 		countdown = (CountdownChronometer) findViewById(R.id.chronometer1);
 		// countdown.setBase(System.currentTimeMillis() + 30000);

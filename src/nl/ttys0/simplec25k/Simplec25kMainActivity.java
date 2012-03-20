@@ -116,6 +116,7 @@ public class Simplec25kMainActivity extends ListActivity {
 
 		Intent myIntent = new Intent(this, TimerActivity.class);
 		startActivityForResult(myIntent, 0);
+		
 	}
 
 	// class to fill list
