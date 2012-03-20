@@ -20,14 +20,23 @@ public class MyPhoneStateListener extends PhoneStateListener {
 			break;
 		case TelephonyManager.CALL_STATE_RINGING:
 			// Log.d("DEBUG", "RINGING");
+
+			// setup intent for sending command
 			Intent myIntent = new Intent();
 			myIntent.setAction(MY_ACTION);
 			myIntent.putExtra("DATA_TO_PS", "PAUSE");
-			Context context = TimerActivity.context;
-			if (context != null)
-				context.sendBroadcast(myIntent);
 
-			TimerActivity.countdown.stop();
+			// send command
+			Context context = TimerActivity.context;
+			if (context != null) {
+				context.sendBroadcast(myIntent);
+			}
+
+			// stop the countdown in the gui
+			CountdownChronometer cc = TimerActivity.countdown;
+			if (cc != null) {
+				cc.stop();
+			}
 			break;
 		}
 	}
