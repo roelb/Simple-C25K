@@ -59,6 +59,8 @@ public class TimerActivity extends Activity {
 	private AlertDialog.Builder completedAlertbox;
 	private AlertDialog.Builder stopAlertbox;
 
+	private AlertDialog.Builder skipAlertbox;
+
 	// selected from main
 	public static String selectedProgram;
 
@@ -74,7 +76,8 @@ public class TimerActivity extends Activity {
 		// myIntent.putExtra("DATA_TO_PS", "ARE_YOU_RUNNING");
 		// sendBroadcast(myIntent);
 
-		// setup descriptions
+		// setup descriptions, this should probably go in strings.xml. Too lazy
+		// for now *todo?:)*
 		hashMap.put(
 				"w1d1",
 				"Brisk five-minute warmup walk. Then alternate 60 seconds of jogging and 90 seconds of walking for a total of 20 minutes.");
@@ -182,13 +185,19 @@ public class TimerActivity extends Activity {
 
 		button = (Button) findViewById(R.id.stopButton);
 		button.setOnClickListener(mStopListener);
-		// button.setVisibility(View.GONE);
+		button.setClickable(false);
 
 		button = (Button) findViewById(R.id.pauseButton);
 		button.setOnClickListener(mPauseListener);
+		button.setClickable(false);
 
 		button = (Button) findViewById(R.id.resumeButton);
 		button.setOnClickListener(mResumeListener);
+		button.setClickable(false);
+
+		button = (Button) findViewById(R.id.skipButton);
+		button.setOnClickListener(mSkipListener);
+		button.setClickable(false);
 
 		// set text fields
 		description = (TextView) findViewById(R.id.textView1);
@@ -236,6 +245,18 @@ public class TimerActivity extends Activity {
 			button = (Button) findViewById(R.id.startButton);
 			button.setClickable(false);
 
+			// enable stopbutton
+			button = (Button) findViewById(R.id.stopButton);
+			button.setClickable(true);
+
+			// enable skipbutton
+			button = (Button) findViewById(R.id.skipButton);
+			button.setClickable(true);
+
+			// enable pausebutton
+			button = (Button) findViewById(R.id.pauseButton);
+			button.setClickable(true);
+
 			// Start our own service
 			Intent svcIntent = new Intent(TimerActivity.this,
 					nl.ttys0.simplec25k.ProgramService.class);
@@ -250,6 +271,18 @@ public class TimerActivity extends Activity {
 		public void onClick(View v) {
 			// mChronometer.stop();
 
+			// enable resumebutton
+			button = (Button) findViewById(R.id.resumeButton);
+			button.setClickable(true);
+
+			// disable skipbutton
+			button = (Button) findViewById(R.id.skipButton);
+			button.setClickable(false);
+
+			// disable pausebutton
+			button = (Button) findViewById(R.id.pauseButton);
+			button.setClickable(false);
+
 			Intent myIntent = new Intent();
 			myIntent.setAction(MY_ACTION);
 			myIntent.putExtra("DATA_TO_PS", "PAUSE");
@@ -263,10 +296,30 @@ public class TimerActivity extends Activity {
 	// resume button
 	View.OnClickListener mResumeListener = new OnClickListener() {
 		public void onClick(View v) {
+
+			// disable resumebutton
+			button = (Button) findViewById(R.id.resumeButton);
+			button.setClickable(false);
+
+			// enable pausebutton
+			button = (Button) findViewById(R.id.pauseButton);
+			button.setClickable(true);
+
+			// enable skipbutton
+			button = (Button) findViewById(R.id.skipButton);
+			button.setClickable(true);
+
 			Intent myIntent = new Intent();
 			myIntent.setAction(MY_ACTION);
 			myIntent.putExtra("DATA_TO_PS", "RESUME");
 			sendBroadcast(myIntent);
+		}
+	};
+
+	// skip button
+	View.OnClickListener mSkipListener = new OnClickListener() {
+		public void onClick(View v) {
+			skipAlertbox.show();
 		}
 	};
 
@@ -321,6 +374,8 @@ public class TimerActivity extends Activity {
 					}
 				});
 
+		// prepare stopAlertbox, yeah I know this could go together with the
+		// skipalertbox
 		stopAlertbox = new AlertDialog.Builder(this);
 		stopAlertbox
 				.setMessage("Are you sure you want to exit?")
@@ -336,6 +391,28 @@ public class TimerActivity extends Activity {
 
 								// stop this activity
 								finish();
+							}
+						})
+				.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+
+		// prepare skipalertbox
+		skipAlertbox = new AlertDialog.Builder(this);
+		skipAlertbox
+				.setMessage("Are you sure you want to skip?")
+				.setCancelable(false)
+				.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								// send STOP signal
+								Intent myIntent = new Intent();
+								myIntent.setAction(MY_ACTION);
+								myIntent.putExtra("DATA_TO_PS", "SKIP");
+								sendBroadcast(myIntent);
+
 							}
 						})
 				.setNegativeButton("No", new DialogInterface.OnClickListener() {

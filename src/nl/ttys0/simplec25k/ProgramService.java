@@ -53,7 +53,7 @@ public class ProgramService extends Service {
 	static final String SCHEDULEFILE = "schedule";
 
 	// these two are used to check if this service should pause or stop
-	private boolean running, paused, skip;
+	private boolean running, paused, skipInterval;
 
 	// pi is used for setting the alarm. It should be known troughout this class
 	// to enable us to cancell the alarm.
@@ -132,7 +132,7 @@ public class ProgramService extends Service {
 
 		running = true;
 		paused = false;
-		skip = false;
+		skipInterval = false;
 
 		// w1d1, w1d2, w1d3
 		if (selectedProgram.contains("w1")) {
@@ -443,13 +443,14 @@ public class ProgramService extends Service {
 					// parse to readable format (mm:ss)
 					seconds = secondsUntilFinished % 60;
 					minutes = secondsUntilFinished / 60;
-					
-					//if (secondsUntilFinished%5==0){//take it easy on the notificationbar
+
+					// if (secondsUntilFinished%5==0){//take it easy on the
+					// notificationbar
 
 					sendNotification(workout,
 							message + String.format("%02d", minutes) + ":"
 									+ String.format("%02d", seconds));
-					//}
+					// }
 
 					Thread.sleep(interval);
 				} catch (InterruptedException e) {
@@ -494,6 +495,18 @@ public class ProgramService extends Service {
 
 				// update systFinished
 				systFinished = System.currentTimeMillis() + msUntilFinished;
+
+			}
+
+			if ((skipInterval) && (running) && (!paused)) {
+				// Disable skipping
+				skipInterval = false;
+
+				// cancel scheduled alarm
+				stopTimer(pi);
+
+				// return to startworkout for next interval
+				return false;
 
 			}
 
@@ -626,6 +639,8 @@ public class ProgramService extends Service {
 					paused = false;
 				if (orgData.equals("STOP"))
 					running = false;
+				if (orgData.equals("SKIP"))
+					skipInterval = true;
 			}
 
 			// sendNotification("", orgData);

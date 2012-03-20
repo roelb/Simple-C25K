@@ -24,6 +24,7 @@ public final class R {
         public static final int pauseButton=0x7f060008;
         public static final int relativeLayout1=0x7f060002;
         public static final int resumeButton=0x7f060003;
+        public static final int skipButton=0x7f06000c;
         public static final int startButton=0x7f060009;
         public static final int stopButton=0x7f06000a;
         public static final int textView1=0x7f060007;
