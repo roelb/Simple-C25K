@@ -32,6 +32,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -67,85 +68,44 @@ public class TimerActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.timer);
 
-		// Ask service if it's running, if so we'll receive a message with the
-		// right values for the gui.
-		// Intent myIntent = new Intent();
-		// myIntent.setAction(MY_ACTION);
-		// myIntent.putExtra("DATA_TO_PS", "ARE_YOU_RUNNING");
-		// sendBroadcast(myIntent);
+		// setup descriptions, there is probably an easier way that I don't know
+		// of:)
+		Resources res = getResources();
+		hashMap.put("w1d1", res.getString(R.string.w1));
+		hashMap.put("w1d2", res.getString(R.string.w1));
+		hashMap.put("w1d3", res.getString(R.string.w1));
 
-		// setup descriptions, this should probably go in strings.xml. Too lazy
-		// for now *todo?:)*
-		hashMap.put(
-				"w1d1",
-				"Brisk five-minute warmup walk. Then alternate 60 seconds of jogging and 90 seconds of walking for a total of 20 minutes.");
-		hashMap.put(
-				"w1d2",
-				"Brisk five-minute warmup walk. Then alternate 60 seconds of jogging and 90 seconds of walking for a total of 20 minutes.");
-		hashMap.put(
-				"w1d3",
-				"Brisk five-minute warmup walk. Then alternate 60 seconds of jogging and 90 seconds of walking for a total of 20 minutes.");
-		hashMap.put(
-				"w2d1",
-				"Brisk five-minute warmup walk. Then alternate 90 seconds of jogging and 2 minutes of walking for a total of 20 minutes.");
-		hashMap.put(
-				"w2d2",
-				"Brisk five-minute warmup walk. Then alternate 90 seconds of jogging and 2 minutes of walking for a total of 20 minutes.");
-		hashMap.put(
-				"w2d3",
-				"Brisk five-minute warmup walk. Then alternate 90 seconds of jogging and 2 minutes of walking for a total of 20 minutes.");
-		hashMap.put(
-				"w3d1",
-				"Brisk five-minute warmup walk. Then do two repetitions of the following:\nJog 90 seconds\nWalk 90 seconds\nJog 3 minutes\nWalk 3 minutes");
-		hashMap.put(
-				"w3d2",
-				"Brisk five-minute warmup walk. Then do two repetitions of the following:\nJog 90 seconds\nWalk 90 seconds\nJog 3 minutes\nWalk 3 minutes");
-		hashMap.put(
-				"w3d3",
-				"Brisk five-minute warmup walk. Then do two repetitions of the following:\nJog 90 seconds\nWalk 90 seconds\nJog 3 minutes\nWalk 3 minutes");
-		hashMap.put(
-				"w4d1",
-				"Brisk five-minute warmup walk. Then:\nJog 3 minutes\nWalk 90 seconds\nJog 5 minutes\nWalk 2-1/2 minutes\nJog 3 minutes\nWalk 90 seconds\nJog 5 minutes");
-		hashMap.put(
-				"w4d2",
-				"Brisk five-minute warmup walk. Then:\nJog 3 minutes\nWalk 90 seconds\nJog 5 minutes\nWalk 2-1/2 minutes\nJog 3 minutes\nWalk 90 seconds\nJog 5 minutes");
-		hashMap.put(
-				"w4d3",
-				"Brisk five-minute warmup walk. Then:\nJog 3 minutes\nWalk 90 seconds\nJog 5 minutes\nWalk 2-1/2 minutes\nJog 3 minutes\nWalk 90 seconds\nJog 5 minutes");
-		hashMap.put(
-				"w5d1",
-				"Brisk five-minute warmup walk, then:\nJog 5 minutes\nWalk 3 minutes\nJog 5 minutes\nWalk 3 minutes\nJog 5 minutes");
-		hashMap.put(
-				"w5d2",
-				"Brisk five-minute warmup walk, then:\nJog 8 minutes\nWalk 5 minutes\nJog 8 minutes");
-		hashMap.put("w5d3",
-				"Brisk five-minute warmup walk, then jog 20 minutes) with no walking.");
-		hashMap.put(
-				"w6d1",
-				"Brisk five-minute warmup walk, then:\nJog 5 minutes\nWalk 3 minutes\nJog 8 minutes\nWalk 3 minutes\nJog 5 minutes");
-		hashMap.put(
-				"w6d2",
-				"Brisk five-minute warmup walk, then:\nJog 10 minutes\nWalk 3 minutes\nJog 10 minutes");
-		hashMap.put("w6d3",
-				"Brisk five-minute warmup walk, then jog 22 minutes with no walking.");
-		hashMap.put("w7d1",
-				"Brisk five-minute warmup walk, then jog 25 minutes.");
-		hashMap.put("w7d2",
-				"Brisk five-minute warmup walk, then jog 25 minutes.");
-		hashMap.put("w7d3",
-				"Brisk five-minute warmup walk, then jog 25 minutes.");
-		hashMap.put("w8d1",
-				"Brisk five-minute warmup walk, then jog 28 minutes.");
-		hashMap.put("w8d2",
-				"Brisk five-minute warmup walk, then jog 28 minutes.");
-		hashMap.put("w8d3",
-				"Brisk five-minute warmup walk, then jog 28 minutes.");
-		hashMap.put("w9d1",
-				"Brisk five-minute warmup walk, then jog 30 minutes.");
-		hashMap.put("w9d2",
-				"Brisk five-minute warmup walk, then jog 30 minutes.");
-		hashMap.put("w9d3",
-				"Brisk five-minute warmup walk, then jog 30 minutes.");
+		hashMap.put("w2d1", res.getString(R.string.w2));
+		hashMap.put("w2d2", res.getString(R.string.w2));
+		hashMap.put("w2d3", res.getString(R.string.w2));
+
+		hashMap.put("w3d1", res.getString(R.string.w3));
+		hashMap.put("w3d2", res.getString(R.string.w3));
+		hashMap.put("w3d3", res.getString(R.string.w3));
+
+		hashMap.put("w4d1", res.getString(R.string.w4));
+		hashMap.put("w4d2", res.getString(R.string.w4));
+		hashMap.put("w4d3", res.getString(R.string.w4));
+
+		hashMap.put("w5d1", res.getString(R.string.w5d1));
+		hashMap.put("w5d2", res.getString(R.string.w5d2));
+		hashMap.put("w5d3", res.getString(R.string.w5d3));
+
+		hashMap.put("w6d1", res.getString(R.string.w6d1));
+		hashMap.put("w6d2", res.getString(R.string.w6d2));
+		hashMap.put("w6d3", res.getString(R.string.w6d3));
+
+		hashMap.put("w7d1", res.getString(R.string.w7));
+		hashMap.put("w7d2", res.getString(R.string.w7));
+		hashMap.put("w7d3", res.getString(R.string.w7));
+
+		hashMap.put("w8d1", res.getString(R.string.w8));
+		hashMap.put("w8d2", res.getString(R.string.w8));
+		hashMap.put("w8d3", res.getString(R.string.w8));
+
+		hashMap.put("w9d1", res.getString(R.string.w9));
+		hashMap.put("w9d2", res.getString(R.string.w9));
+		hashMap.put("w9d3", res.getString(R.string.w9));
 
 		TimerActivity.context = this;
 
@@ -165,9 +125,12 @@ public class TimerActivity extends Activity {
 		// activity. But this works for now
 		selectedProgram = Simplec25kMainActivity.selectedProgram;
 		if (selectedProgram == null) {
-			Intent myIntent = new Intent(this, Simplec25kMainActivity.class);
-			startActivityForResult(myIntent, 0);
-			finish();
+			// restart app
+			Intent i = getBaseContext().getPackageManager()
+					.getLaunchIntentForPackage(
+							getBaseContext().getPackageName());
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(i);
 		} else {
 
 			countdown = (CountdownChronometer) findViewById(R.id.chronometer1);
