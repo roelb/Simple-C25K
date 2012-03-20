@@ -170,46 +170,48 @@ public class TimerActivity extends Activity {
 			Intent myIntent = new Intent(this, Simplec25kMainActivity.class);
 			startActivityForResult(myIntent, 0);
 			finish();
+		} else {
+
+			countdown = (CountdownChronometer) findViewById(R.id.chronometer1);
+			// countdown.setBase(System.currentTimeMillis() + 30000);
+
+			mainTitle = (TextView) findViewById(R.id.name);
+			mainTitle.setText(selectedProgram.replace("w", "Week ").replace(
+					"d", ", Day "));
+
+			// Watch for button clicks.
+			button = (Button) findViewById(R.id.startButton);
+			button.setOnClickListener(mStartListener);
+
+			button = (Button) findViewById(R.id.stopButton);
+			button.setOnClickListener(mStopListener);
+			button.setClickable(false);
+
+			button = (Button) findViewById(R.id.pauseButton);
+			button.setOnClickListener(mPauseListener);
+			button.setClickable(false);
+
+			button = (Button) findViewById(R.id.resumeButton);
+			button.setOnClickListener(mResumeListener);
+			button.setClickable(false);
+
+			button = (Button) findViewById(R.id.skipButton);
+			button.setOnClickListener(mSkipListener);
+			button.setClickable(false);
+
+			// set text fields
+			description = (TextView) findViewById(R.id.textView1);
+			description.setText(hashMap.get(selectedProgram));
+
+			current = (TextView) findViewById(R.id.textView2);
+			current.setText("Press Start to begin.");
+
+			infotxt = (TextView) findViewById(R.id.textView3);
+			infotxt.setText("");
+
+			countdown = (CountdownChronometer) findViewById(R.id.chronometer1);
+
 		}
-
-		countdown = (CountdownChronometer) findViewById(R.id.chronometer1);
-		// countdown.setBase(System.currentTimeMillis() + 30000);
-
-		mainTitle = (TextView) findViewById(R.id.name);
-		mainTitle.setText(selectedProgram.replace("w", "Week ").replace("d",
-				", Day "));
-
-		// Watch for button clicks.
-		button = (Button) findViewById(R.id.startButton);
-		button.setOnClickListener(mStartListener);
-
-		button = (Button) findViewById(R.id.stopButton);
-		button.setOnClickListener(mStopListener);
-		button.setClickable(false);
-
-		button = (Button) findViewById(R.id.pauseButton);
-		button.setOnClickListener(mPauseListener);
-		button.setClickable(false);
-
-		button = (Button) findViewById(R.id.resumeButton);
-		button.setOnClickListener(mResumeListener);
-		button.setClickable(false);
-
-		button = (Button) findViewById(R.id.skipButton);
-		button.setOnClickListener(mSkipListener);
-		button.setClickable(false);
-
-		// set text fields
-		description = (TextView) findViewById(R.id.textView1);
-		description.setText(hashMap.get(selectedProgram));
-
-		current = (TextView) findViewById(R.id.textView2);
-		current.setText("Press Start to begin.");
-
-		infotxt = (TextView) findViewById(R.id.textView3);
-		infotxt.setText("");
-
-		countdown = (CountdownChronometer) findViewById(R.id.chronometer1);
 
 	}
 
