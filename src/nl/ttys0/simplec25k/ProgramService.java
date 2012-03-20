@@ -20,6 +20,10 @@
 
 package nl.ttys0.simplec25k;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Calendar;
 
 import android.app.AlarmManager;
@@ -36,6 +40,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
+import android.widget.Toast;
 
 public class ProgramService extends Service {
 	private static final String TAG = "MyService";
