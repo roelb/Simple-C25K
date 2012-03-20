@@ -9,27 +9,27 @@ import android.telephony.TelephonyManager;
 
 public class MyPhoneStateListener extends PhoneStateListener {
 	protected static final String MY_ACTION = "MY_ACTION";
-	public void onCallStateChanged(int state,String incomingNumber){
-		switch(state)
-     	{
-           case TelephonyManager.CALL_STATE_IDLE:
-                //Log.d("DEBUG", "IDLE");
-                break;
-           case TelephonyManager.CALL_STATE_OFFHOOK:
-                //Log.d("DEBUG", "OFFHOOK");
-                break;
-           case TelephonyManager.CALL_STATE_RINGING:
-        	   //Log.d("DEBUG", "RINGING");
-   			Intent myIntent = new Intent();
-   			myIntent.setAction(MY_ACTION);
-   			myIntent.putExtra("DATA_TO_PS", "PAUSE");
-   			Context context = TimerActivity.context;
-   			if(context!=null)
-   				context.sendBroadcast(myIntent);
-   			
-   			TimerActivity.countdown.stop();
-        	break;
-     	}
-	}	
+
+	public void onCallStateChanged(int state, String incomingNumber) {
+		switch (state) {
+		case TelephonyManager.CALL_STATE_IDLE:
+			// Log.d("DEBUG", "IDLE");
+			break;
+		case TelephonyManager.CALL_STATE_OFFHOOK:
+			// Log.d("DEBUG", "OFFHOOK");
+			break;
+		case TelephonyManager.CALL_STATE_RINGING:
+			// Log.d("DEBUG", "RINGING");
+			Intent myIntent = new Intent();
+			myIntent.setAction(MY_ACTION);
+			myIntent.putExtra("DATA_TO_PS", "PAUSE");
+			Context context = TimerActivity.context;
+			if (context != null)
+				context.sendBroadcast(myIntent);
+
+			TimerActivity.countdown.stop();
+			break;
+		}
+	}
 
 }
