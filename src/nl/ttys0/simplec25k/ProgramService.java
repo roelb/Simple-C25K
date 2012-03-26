@@ -138,8 +138,8 @@ public class ProgramService extends Service {
 			if (running)
 				countdown(5 * 60, 500, "Warmup", "Warmup: Brisk walk for ");
 
-			// 60+90=2.5minutes, so do this 6 times for a total of 15
-			for (int i = 0; i < 6; i++) {
+			// 60+90=2.5minutes, so do this 8 times for a total of 20
+			for (int i = 0; i < 8; i++) {
 				// jogging 60s
 				if (running)
 					countdown(60, 500, "Jogging", "Jog for ");
@@ -155,8 +155,8 @@ public class ProgramService extends Service {
 			if (running)
 				countdown(5 * 60, 500, "Warmup", "Warmup: Brisk walk for ");
 
-			// 90+120=3.5minutes, so do this 4 times
-			for (int i = 0; i < 4; i++) {
+			// 90+120=3.5minutes, so do this 5 times
+			for (int i = 0; i < 5; i++) {
 				// jogging 90s
 				if (running)
 					countdown(90, 500, "Jogging", "Jog for ");
@@ -164,9 +164,12 @@ public class ProgramService extends Service {
 				if (running)
 					countdown(120, 500, "Walking", "Walk for ");
 			}
-			// fill one more minute 'cause 4*3.5=14
+			// more running 'cause 5*3.5=17.5
 			if (running)
-				countdown(60, 500, "Jogging", "Jog for ");
+				countdown(90, 500, "Jogging", "Jog for ");
+			//walk 60
+			if (running)
+			countdown(60, 500, "Walking", "Walk for ");
 		}
 
 		// w3
