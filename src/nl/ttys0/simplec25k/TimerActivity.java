@@ -22,10 +22,6 @@
 
 package nl.ttys0.simplec25k;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import nl.ttys0.simplec25k.R;
@@ -43,7 +39,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class TimerActivity extends Activity {
 

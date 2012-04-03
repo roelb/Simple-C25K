@@ -38,28 +38,16 @@ import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
 
 public class ProgramService extends Service {
-	private static final String TAG = "MyService";
+	private static final String SCHEDULEFILE = "schedule";
 	protected static final String MY_ACTION = "MY_ACTION";
-	Context context = this;
+
 	private String selectedProgram;
-	Thread workoutThread;
-
-	WakeLock mWakeLock;
-
-	Boolean finished = false;
-
-	static final String SCHEDULEFILE = "schedule";
-
-	// these two are used to check if this service should pause or stop
 	private boolean running, paused, skipInterval;
 
-	// pi is used for setting the alarm. It should be known troughout this class
-	// to enable us to cancell the alarm.
-	PendingIntent pi;
-
-	MyReceiver myReceiver;
-
-	Intent thisIntent;
+	private Thread workoutThread;
+	private WakeLock mWakeLock;
+	private PendingIntent pi;
+	private MyReceiver myReceiver;
 	private AlarmManager alarmManager;
 
 	@Override
@@ -120,7 +108,7 @@ public class ProgramService extends Service {
 	// ============================================================
 	// ROUTINES
 	// ============================================================
-
+	// bloody mess, in the future the information should be read from a file
 	private void startWorkout() {
 
 		Intent myIntent = new Intent();
@@ -167,9 +155,9 @@ public class ProgramService extends Service {
 			// more running 'cause 5*3.5=17.5
 			if (running)
 				countdown(90, 500, "Jogging", "Jog for ");
-			//walk 60
+			// walk 60
 			if (running)
-			countdown(60, 500, "Walking", "Walk for ");
+				countdown(60, 500, "Walking", "Walk for ");
 		}
 
 		// w3
@@ -621,17 +609,7 @@ public class ProgramService extends Service {
 		@Override
 		public void onReceive(Context arg0, Intent arg1) {
 
-			int datapassed = arg1.getIntExtra("DATAPASSED", 0);
 			String orgData = arg1.getStringExtra("DATA_TO_PS");
-
-			// here we can receive commands from timerActivity
-
-			// Toast.makeText(
-			// ProgramService.this,
-			// "ProgramService: Triggered\n" + "Data passed: "
-			// + String.valueOf(datapassed) + "\n"
-			// + "original Data: " + orgData, Toast.LENGTH_LONG)
-			// .show();
 
 			if (orgData != null) {
 				if (orgData.equals("PAUSE"))
@@ -643,8 +621,6 @@ public class ProgramService extends Service {
 				if (orgData.equals("SKIP"))
 					skipInterval = true;
 			}
-
-			// sendNotification("", orgData);
 
 		}
 

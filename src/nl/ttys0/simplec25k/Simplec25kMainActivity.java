@@ -51,7 +51,7 @@ public class Simplec25kMainActivity extends ListActivity {
 	static Boolean[] programDoneArr = new Boolean[27]; // workout completed?
 	static String selectedProgram;
 
-	WorkoutFileEditor workoutFileEditor = new WorkoutFileEditor(this);
+	private WorkoutFileEditor workoutFileEditor = new WorkoutFileEditor(this);
 
 	/** Called when the activity is first created. */
 	@Override
@@ -166,14 +166,8 @@ public class Simplec25kMainActivity extends ListActivity {
 						programStringArr[i] = tk.nextToken();
 						programDoneArr[i] = Boolean.valueOf(tk.nextToken());
 					}
-
 				}
 			}
-
-			// sendNotification("", orgData);
-
 		}
-
 	}
-
 }

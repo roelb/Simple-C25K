@@ -17,7 +17,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  *  info:
- *  This Class is used for setting an alarm. When the alarm goes of a defined message
+ *  This Class is used for setting an alarm. When the alarm goes off a message
  *  (MESSAGE) will be send to the notification bar.
  */
 
@@ -62,13 +62,13 @@ public class MyAlarmService extends Service {
 		super.onStart(intent, startId);
 
 		// retrieve workout info
-		// This needs to be in onStart to be able to retrieve the data
-		message = intent.getStringExtra("MESSAGE"); // not needed... for now
-
+		//message = intent.getStringExtra("MESSAGE"); 
+		
+		//play beep
 		MediaPlayer mp = MediaPlayer.create(MyAlarmService.this, R.raw.beep);
 		mp.start();
 
-		// setup vibrator
+		// vibrate
 		Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		long[] pat = { 0, 700, 700 };
 		v.vibrate(pat, -1);
