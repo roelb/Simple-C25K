@@ -57,6 +57,13 @@ public class TimerActivity extends Activity {
 	private AlertDialog.Builder startedAlertbox;
 	private AlertDialog.Builder completedAlertbox;
 	private AlertDialog.Builder stopAlertbox;
+	
+	private Button startButton;
+	private Button pauseButton;
+	private Button skipButton;
+	
+	private Boolean paused=false;
+	private Boolean started=false;
 
 	private AlertDialog.Builder skipAlertbox;
 
@@ -67,6 +74,7 @@ public class TimerActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.timer);
+		
 
 		// setup descriptions, there is probably an easier way that I don't know
 		// of:)
@@ -140,25 +148,23 @@ public class TimerActivity extends Activity {
 			mainTitle.setText(selectedProgram.replace("w", "Week ").replace(
 					"d", ", Day "));
 
+			
+
+			startButton=(Button) findViewById(R.id.startButton);
+			pauseButton=(Button) findViewById(R.id.pauseButton);
+			skipButton= (Button) findViewById(R.id.skipButton);
+			
 			// Watch for button clicks.
-			button = (Button) findViewById(R.id.startButton);
-			button.setOnClickListener(mStartListener);
+			//button = (Button) findViewById(R.id.startButton);
+			startButton.setOnClickListener(mStartListener);
 
-			button = (Button) findViewById(R.id.stopButton);
-			button.setOnClickListener(mStopListener);
-			button.setClickable(false);
+			//button = (Button) findViewById(R.id.pauseButton);
+			pauseButton.setOnClickListener(mPauseListener);
+			pauseButton.setClickable(false);
 
-			button = (Button) findViewById(R.id.pauseButton);
-			button.setOnClickListener(mPauseListener);
-			button.setClickable(false);
-
-			button = (Button) findViewById(R.id.resumeButton);
-			button.setOnClickListener(mResumeListener);
-			button.setClickable(false);
-
-			button = (Button) findViewById(R.id.skipButton);
-			button.setOnClickListener(mSkipListener);
-			button.setClickable(false);
+			//button = (Button) findViewById(R.id.skipButton);
+			skipButton.setOnClickListener(mSkipListener);
+			skipButton.setClickable(false);
 
 			// set text fields
 			description = (TextView) findViewById(R.id.textView1);
@@ -167,8 +173,6 @@ public class TimerActivity extends Activity {
 			current = (TextView) findViewById(R.id.textView2);
 			current.setText("Press Start to begin.");
 
-			infotxt = (TextView) findViewById(R.id.textView3);
-			infotxt.setText("");
 
 			countdown = (CountdownChronometer) findViewById(R.id.chronometer1);
 
@@ -203,29 +207,28 @@ public class TimerActivity extends Activity {
 	// Start button
 	View.OnClickListener mStartListener = new OnClickListener() {
 		public void onClick(View v) {
-
-			// disable startbutton
-			button = (Button) findViewById(R.id.startButton);
-			button.setClickable(false);
-
-			// enable stopbutton
-			button = (Button) findViewById(R.id.stopButton);
-			button.setClickable(true);
-
+			
+			if(!started){
+				
+			//change into stopbutton 
+			started=true;
+			startButton.setText("Stop");
+			
 			// enable skipbutton
-			button = (Button) findViewById(R.id.skipButton);
-			button.setClickable(true);
+			skipButton.setClickable(true);
 
 			// enable pausebutton
-			button = (Button) findViewById(R.id.pauseButton);
-			button.setClickable(true);
+			pauseButton.setClickable(true);
 
-			// Start our own service
+			// Start our service
 			Intent svcIntent = new Intent(TimerActivity.this,
 					nl.ttys0.simplec25k.ProgramService.class);
 			svcIntent.putExtra("INIT_DATA", selectedProgram);
 			startService(svcIntent);
-
+			
+			}
+			else
+				stopAlertbox.show();
 		}
 	};
 
@@ -233,49 +236,38 @@ public class TimerActivity extends Activity {
 	View.OnClickListener mPauseListener = new OnClickListener() {
 		public void onClick(View v) {
 			// mChronometer.stop();
+			
+			if(!paused){
+				
+				//change pausebutton into a resume button
+				paused=true;
+				pauseButton.setText("resume");
+				
+				// disable skipbutton
+				skipButton.setClickable(false);
+				
+				//send pause broadcast 
+				Intent myIntent = new Intent();
+				myIntent.setAction(MY_ACTION);
+				myIntent.putExtra("DATA_TO_PS", "PAUSE");
+				sendBroadcast(myIntent);
+ 
+				countdown.stop();
+				
+			}
+			else{
+				
+				//change into pausebutton
+				paused=false;
+				skipButton.setClickable(true);
 
-			// enable resumebutton
-			button = (Button) findViewById(R.id.resumeButton);
-			button.setClickable(true);
+				Intent myIntent = new Intent();
+				myIntent.setAction(MY_ACTION);
+				myIntent.putExtra("DATA_TO_PS", "RESUME");
+				sendBroadcast(myIntent);
+				
+			}
 
-			// disable skipbutton
-			button = (Button) findViewById(R.id.skipButton);
-			button.setClickable(false);
-
-			// disable pausebutton
-			button = (Button) findViewById(R.id.pauseButton);
-			button.setClickable(false);
-
-			Intent myIntent = new Intent();
-			myIntent.setAction(MY_ACTION);
-			myIntent.putExtra("DATA_TO_PS", "PAUSE");
-			sendBroadcast(myIntent);
-
-			countdown.stop();
-
-		}
-	};
-
-	// resume button
-	View.OnClickListener mResumeListener = new OnClickListener() {
-		public void onClick(View v) {
-
-			// disable resumebutton
-			button = (Button) findViewById(R.id.resumeButton);
-			button.setClickable(false);
-
-			// enable pausebutton
-			button = (Button) findViewById(R.id.pauseButton);
-			button.setClickable(true);
-
-			// enable skipbutton
-			button = (Button) findViewById(R.id.skipButton);
-			button.setClickable(true);
-
-			Intent myIntent = new Intent();
-			myIntent.setAction(MY_ACTION);
-			myIntent.putExtra("DATA_TO_PS", "RESUME");
-			sendBroadcast(myIntent);
 		}
 	};
 
@@ -283,13 +275,6 @@ public class TimerActivity extends Activity {
 	View.OnClickListener mSkipListener = new OnClickListener() {
 		public void onClick(View v) {
 			skipAlertbox.show();
-		}
-	};
-
-	// stop button
-	View.OnClickListener mStopListener = new OnClickListener() {
-		public void onClick(View v) {
-			stopAlertbox.show();
 		}
 	};
 
