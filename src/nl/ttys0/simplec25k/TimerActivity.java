@@ -45,25 +45,24 @@ public class TimerActivity extends Activity {
 	protected static final String MY_ACTION = "MY_ACTION";
 
 	public static CountdownChronometer countdown;
+	public static CountdownChronometer totalCountdown;
 	public static Context context;
 
 	private TextView mainTitle;
 	private TextView current;
 	private TextView description;
-	private TextView infotxt;
 	private MyReceiver myReceiver;
 	private HashMap<String, String> hashMap = new HashMap<String, String>();
-	private Button button;
 	private AlertDialog.Builder startedAlertbox;
 	private AlertDialog.Builder completedAlertbox;
 	private AlertDialog.Builder stopAlertbox;
-	
+
 	private Button startButton;
 	private Button pauseButton;
 	private Button skipButton;
-	
-	private Boolean paused=false;
-	private Boolean started=false;
+
+	private Boolean paused = false;
+	private Boolean started = false;
 
 	private AlertDialog.Builder skipAlertbox;
 
@@ -74,7 +73,6 @@ public class TimerActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.timer);
-		
 
 		// setup descriptions, there is probably an easier way that I don't know
 		// of:)
@@ -148,21 +146,19 @@ public class TimerActivity extends Activity {
 			mainTitle.setText(selectedProgram.replace("w", "Week ").replace(
 					"d", ", Day "));
 
-			
+			startButton = (Button) findViewById(R.id.startButton);
+			pauseButton = (Button) findViewById(R.id.pauseButton);
+			skipButton = (Button) findViewById(R.id.skipButton);
 
-			startButton=(Button) findViewById(R.id.startButton);
-			pauseButton=(Button) findViewById(R.id.pauseButton);
-			skipButton= (Button) findViewById(R.id.skipButton);
-			
 			// Watch for button clicks.
-			//button = (Button) findViewById(R.id.startButton);
+			// button = (Button) findViewById(R.id.startButton);
 			startButton.setOnClickListener(mStartListener);
 
-			//button = (Button) findViewById(R.id.pauseButton);
+			// button = (Button) findViewById(R.id.pauseButton);
 			pauseButton.setOnClickListener(mPauseListener);
 			pauseButton.setClickable(false);
 
-			//button = (Button) findViewById(R.id.skipButton);
+			// button = (Button) findViewById(R.id.skipButton);
 			skipButton.setOnClickListener(mSkipListener);
 			skipButton.setClickable(false);
 
@@ -173,8 +169,8 @@ public class TimerActivity extends Activity {
 			current = (TextView) findViewById(R.id.textView2);
 			current.setText("Press Start to begin.");
 
-
 			countdown = (CountdownChronometer) findViewById(R.id.chronometer1);
+			totalCountdown = (CountdownChronometer) findViewById(R.id.chronometer2);
 
 		}
 
@@ -207,27 +203,26 @@ public class TimerActivity extends Activity {
 	// Start button
 	View.OnClickListener mStartListener = new OnClickListener() {
 		public void onClick(View v) {
-			
-			if(!started){
-				
-			//change into stopbutton 
-			started=true;
-			startButton.setText("Stop");
-			
-			// enable skipbutton
-			skipButton.setClickable(true);
 
-			// enable pausebutton
-			pauseButton.setClickable(true);
+			if (!started) {
 
-			// Start our service
-			Intent svcIntent = new Intent(TimerActivity.this,
-					nl.ttys0.simplec25k.ProgramService.class);
-			svcIntent.putExtra("INIT_DATA", selectedProgram);
-			startService(svcIntent);
-			
-			}
-			else
+				// change into stopbutton
+				started = true;
+				startButton.setText("Stop");
+
+				// enable skipbutton
+				skipButton.setClickable(true);
+
+				// enable pausebutton
+				pauseButton.setClickable(true);
+
+				// Start our service
+				Intent svcIntent = new Intent(TimerActivity.this,
+						nl.ttys0.simplec25k.ProgramService.class);
+				svcIntent.putExtra("INIT_DATA", selectedProgram);
+				startService(svcIntent);
+
+			} else
 				stopAlertbox.show();
 		}
 	};
@@ -236,36 +231,38 @@ public class TimerActivity extends Activity {
 	View.OnClickListener mPauseListener = new OnClickListener() {
 		public void onClick(View v) {
 			// mChronometer.stop();
-			
-			if(!paused){
-				
-				//change pausebutton into a resume button
-				paused=true;
-				pauseButton.setText("resume");
-				
+
+			if (!paused) {
+
+				// change pausebutton into a resume button
+				paused = true;
+				pauseButton.setText("Resume");
+
 				// disable skipbutton
 				skipButton.setClickable(false);
-				
-				//send pause broadcast 
+
+				// send pause broadcast
 				Intent myIntent = new Intent();
 				myIntent.setAction(MY_ACTION);
 				myIntent.putExtra("DATA_TO_PS", "PAUSE");
 				sendBroadcast(myIntent);
- 
+
 				countdown.stop();
-				
-			}
-			else{
-				
-				//change into pausebutton
-				paused=false;
+				totalCountdown.stop();
+
+			} else {
+
+				// change into pausebutton
+				paused = false;
+				pauseButton.setText("Pause");
+
 				skipButton.setClickable(true);
 
 				Intent myIntent = new Intent();
 				myIntent.setAction(MY_ACTION);
 				myIntent.putExtra("DATA_TO_PS", "RESUME");
 				sendBroadcast(myIntent);
-				
+
 			}
 
 		}
@@ -382,21 +379,30 @@ public class TimerActivity extends Activity {
 			if (orgData != null) {
 				if (orgData.equals("DONE")) {
 					completedAlertbox.show();
-				}
-				if (orgData.equals("STARTED")) {
+				} else if (orgData.equals("STARTED")) {
 					startedAlertbox.show();
 
-				}
-				if (orgData.contains("SET_CURRENT")) {
+				} else if (orgData.contains("SET_CURRENT")) {
 					String[] s = orgData.split(";");
 
 					current.setText(s[1]);
 
 					countdown.setBase(System.currentTimeMillis()
 							+ Integer.parseInt(s[2]));
+					totalCountdown.setBase(System.currentTimeMillis()
+							+ Integer.parseInt(s[3]));
 					countdown.start();
+					totalCountdown.start();
 
 				}
+
+				/*
+				 * unused atm else if
+				 * (orgData.contains("UPDATE_TOTAL_COUNTDOWN")){
+				 * totalCountdown.setBase(System.currentTimeMillis() +
+				 * arg1.getIntExtra("TIMESET", 0)*1000); totalCountdown.start();
+				 * }
+				 */
 
 			}
 

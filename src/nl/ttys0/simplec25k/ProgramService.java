@@ -50,6 +50,8 @@ public class ProgramService extends Service {
 	private MyReceiver myReceiver;
 	private AlarmManager alarmManager;
 
+	private int totalTimeLeft;
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -108,8 +110,11 @@ public class ProgramService extends Service {
 	// ============================================================
 	// ROUTINES
 	// ============================================================
-	// bloody mess, in the future the information should be read from a file
+	// awful bloody mess, in the future the information should be read from a
+	// file
 	private void startWorkout() {
+
+		totalTimeLeft = 0;
 
 		Intent myIntent = new Intent();
 		myIntent.setAction(MY_ACTION);
@@ -120,8 +125,9 @@ public class ProgramService extends Service {
 		paused = false;
 		skipInterval = false;
 
-		// w1d1, w1d2, w1d3
+		// w1d1, w1d2, w1d3 //total workout time: 25m
 		if (selectedProgram.contains("w1")) {
+			totalTimeLeft = 25 * 60 * 1000;
 			// warmup 5m
 			if (running)
 				countdown(5 * 60, 500, "Warmup", "Warmup: Brisk walk for ");
@@ -139,6 +145,7 @@ public class ProgramService extends Service {
 
 		// w2
 		else if (selectedProgram.contains("w2")) {
+			totalTimeLeft = 25 * 60 * 1000;
 			// warmup 5m
 			if (running)
 				countdown(5 * 60, 500, "Warmup", "Warmup: Brisk walk for ");
@@ -162,6 +169,7 @@ public class ProgramService extends Service {
 
 		// w3
 		else if (selectedProgram.contains("w3")) {
+			totalTimeLeft = 1380 * 1000;
 			// warmup 5m
 			if (running)
 				countdown(5 * 60, 500, "Warmup", "Warmup: Brisk walk for ");
@@ -185,6 +193,8 @@ public class ProgramService extends Service {
 
 		// w4
 		else if (selectedProgram.contains("w4")) {
+			totalTimeLeft = 1590 * 1000;
+
 			// warmup 5m
 			if (running)
 				countdown(5 * 60, 500, "Warmup", "Warmup: Brisk walk for ");
@@ -215,11 +225,13 @@ public class ProgramService extends Service {
 
 		// w5
 		else if (selectedProgram.contains("w5")) {
-			// warmup 5m
-			if (running)
-				countdown(5 * 60, 500, "Warmup", "Warmup: Brisk walk for ");
 
 			if (selectedProgram.equals("w5d1")) {
+				totalTimeLeft = 1560 * 1000;
+				// warmup 5m
+				if (running)
+					countdown(5 * 60, 500, "Warmup", "Warmup: Brisk walk for ");
+
 				// jogging 5m
 				if (running)
 					countdown(300, 500, "Jogging", "Jog for ");
@@ -239,6 +251,11 @@ public class ProgramService extends Service {
 			}
 
 			if (selectedProgram.equals("w5d2")) {
+				totalTimeLeft = 1560 * 1000;
+				// warmup 5m
+				if (running)
+					countdown(5 * 60, 500, "Warmup", "Warmup: Brisk walk for ");
+
 				// jogging 8m
 				if (running)
 					countdown(480, 500, "Jogging", "Jog for ");
@@ -251,6 +268,11 @@ public class ProgramService extends Service {
 			}
 
 			if (selectedProgram.equals("w5d3")) {
+				totalTimeLeft = (1500 * 1000);
+				// warmup 5m
+				if (running)
+					countdown(5 * 60, 500, "Warmup", "Warmup: Brisk walk for ");
+
 				// jogging 20m
 				if (running)
 					countdown(1200, 500, "Jogging", "Jog for ");
@@ -260,11 +282,14 @@ public class ProgramService extends Service {
 
 		// w6
 		else if (selectedProgram.contains("w6")) {
-			// warmup 5m
-			if (running)
-				countdown(5 * 60, 500, "Warmup", "Warmup: Brisk walk for ");
 
 			if (selectedProgram.equals("w6d1")) {
+				totalTimeLeft = 1740 * 1000;
+
+				// warmup 5m
+				if (running)
+					countdown(5 * 60, 500, "Warmup", "Warmup: Brisk walk for ");
+
 				// jogging 5m
 				if (running)
 					countdown(300, 500, "Jogging", "Jog for ");
@@ -282,6 +307,11 @@ public class ProgramService extends Service {
 					countdown(300, 500, "Jogging", "Jog for ");
 
 			} else if (selectedProgram.equals("w6d2")) {
+				totalTimeLeft = 1680 * 1000;
+				// warmup 5m
+				if (running)
+					countdown(5 * 60, 500, "Warmup", "Warmup: Brisk walk for ");
+
 				// jogging 10m
 				if (running)
 					countdown(600, 500, "Jogging", "Jog for ");
@@ -293,6 +323,11 @@ public class ProgramService extends Service {
 					countdown(600, 500, "Jogging", "Jog for ");
 
 			} else if (selectedProgram.equals("w6d3")) {
+				totalTimeLeft = 1620 * 1000;
+				// warmup 5m
+				if (running)
+					countdown(5 * 60, 500, "Warmup", "Warmup: Brisk walk for ");
+
 				// jogging 22m
 				if (running)
 					countdown(1320, 500, "Jogging", "Jog for ");
@@ -302,6 +337,7 @@ public class ProgramService extends Service {
 		}
 
 		else if (selectedProgram.contains("w7")) {
+			totalTimeLeft = 1800 * 1000;
 			// warmup 5m
 			if (running)
 				countdown(5 * 60, 500, "Warmup", "Warmup: Brisk walk for ");
@@ -312,6 +348,7 @@ public class ProgramService extends Service {
 		}
 
 		else if (selectedProgram.contains("w8")) {
+			totalTimeLeft = 1980 * 1000;
 			// warmup 5m
 			if (running)
 				countdown(5 * 60, 500, "Warmup", "Warmup: Brisk walk for ");
@@ -323,6 +360,7 @@ public class ProgramService extends Service {
 
 		// w9d3
 		else if (selectedProgram.contains("w9")) {
+			totalTimeLeft = 2100 * 1000;
 			// warmup 5m
 			if (running)
 				countdown(5 * 60, 500, "Warmup", "Warmup: Brisk walk for ");
@@ -407,10 +445,12 @@ public class ProgramService extends Service {
 		Intent myIntent = new Intent();
 		myIntent.setAction(MY_ACTION);
 		myIntent.putExtra("DATA_TO_TA", "SET_CURRENT;" + workout + ";"
-				+ (time * 1000));
+				+ (time * 1000) + ";" + totalTimeLeft);
 		sendBroadcast(myIntent);
 
 		// dialog.cancel();
+
+		// updateTotalCountdown(totalTimeLeft);
 
 		// send initial notification
 		sendNotification(workout, message + String.format("%02d", minutes)
@@ -476,7 +516,8 @@ public class ProgramService extends Service {
 				// Send data for the GUI
 				myIntent.setAction(MY_ACTION);
 				myIntent.putExtra("DATA_TO_TA", "SET_CURRENT;" + workout + ";"
-						+ (msUntilFinished));
+						+ (msUntilFinished) + ";"
+						+ (totalTimeLeft - (time * 1000 - msUntilFinished)));
 				sendBroadcast(myIntent);
 
 				// set alarm again with the last known resulting time
@@ -494,6 +535,7 @@ public class ProgramService extends Service {
 				// cancel scheduled alarm
 				stopTimer(pi);
 
+				totalTimeLeft -= time * 1000;
 				// return to startworkout for next interval
 				return false;
 
@@ -503,6 +545,8 @@ public class ProgramService extends Service {
 				// cancel scheduled alarm
 				stopTimer(pi);
 
+				totalTimeLeft -= time * 1000;
+
 				// make sure the thread is stopped before killing this service
 				// systFinished = 0;
 				return false;
@@ -510,6 +554,7 @@ public class ProgramService extends Service {
 			}
 
 		}
+		totalTimeLeft -= time * 1000;
 		return true;
 	}
 

@@ -31,16 +31,7 @@
             android:text="Large Text"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/textView2"
-            android:layout_marginTop="14dp"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+
 
         <Button
             android:id="@+id/startButton"
@@ -68,5 +59,44 @@
             android:layout_alignParentBottom="true"
             android:layout_alignRight="@+id/chronometer1"
             android:text="Skip" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/startButton"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="16dp"
+            android:text="Total time left:"
+            android:textAppearance="?android:attr/textAppearanceMedium" android:textSize="16dp"/>
+
+        <nl.ttys0.simplec25k.CountdownChronometer
+            android:id="@+id/chronometer2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/textView3"
+            android:layout_marginRight="36dp"
+            android:text="Chronometer"
+            android:textSize="16dp" />
+
+        <ScrollView
+            android:id="@+id/scrollView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textView3"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textView2" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </ScrollView>
 
     </RelativeLayout>

@@ -62,9 +62,9 @@ public class MyAlarmService extends Service {
 		super.onStart(intent, startId);
 
 		// retrieve workout info
-		//message = intent.getStringExtra("MESSAGE"); 
-		
-		//play beep
+		// message = intent.getStringExtra("MESSAGE");
+
+		// play beep
 		MediaPlayer mp = MediaPlayer.create(MyAlarmService.this, R.raw.beep);
 		mp.start();
 
