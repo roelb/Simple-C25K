@@ -35,6 +35,9 @@ import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -281,10 +284,25 @@ public class TimerActivity extends Activity {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 
 			stopAlertbox.show();
-		}
+		} 
 		return super.onKeyDown(keyCode, event);
 	}
 
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.layout.menu, menu);
+	    return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    Intent myIntent = new Intent(this, Preferences.class);
+		startActivityForResult(myIntent, 0);
+	    return true;
+	}
+	
 	private void setupAlertboxes() {
 
 		// prepare the startedAlertbox

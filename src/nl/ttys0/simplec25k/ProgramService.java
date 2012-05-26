@@ -392,8 +392,8 @@ public class ProgramService extends Service {
 
 			MediaPlayer mp = MediaPlayer
 					.create(ProgramService.this, R.raw.beep);
-			//mp.setVolume(0.5f, 0.5f);
-			mp.start();
+			if(mp!=null)
+				mp.start();
 
 			// let the user know we're done
 			// setup vibrator

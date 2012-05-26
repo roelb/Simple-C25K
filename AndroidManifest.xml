@@ -29,6 +29,12 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
+                <activity
+            android:name="Preferences"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+        </activity>
 
         <service android:name=".MyAlarmService" >
         </service>
