@@ -4,6 +4,7 @@
     <string name="hello">Hello World, ListViewDynamicActivity!</string>
     <string name="app_name">Simple C25K</string>
     <string name="ok_icon">ok_icon</string>
+    <string name="about">Credits:\n\nVoice-over: Cynthia Ross\nDeveloper: Roel Blaauwgeers</string>
     <!-- Exercise instructions -->
     <string name="w1">Brisk five-minute warmup walk. Then alternate 60 seconds of jogging and 90 seconds of walking for a total of 20 minutes.</string>
     <string name="w2">Brisk five-minute warmup walk. Then alternate 90 seconds of jogging and 2 minutes of walking for a total of 20 minutes.</string>

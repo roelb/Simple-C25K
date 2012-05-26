@@ -43,23 +43,24 @@ public final class R {
         public static final int beep=0x7f040000;
     }
     public static final class string {
+        public static final int about=0x7f050003;
         public static final int app_name=0x7f050001;
         public static final int hello=0x7f050000;
         public static final int ok_icon=0x7f050002;
         /**  Exercise instructions 
          */
-        public static final int w1=0x7f050003;
-        public static final int w2=0x7f050004;
-        public static final int w3=0x7f050005;
-        public static final int w4=0x7f050006;
-        public static final int w5d1=0x7f050007;
-        public static final int w5d2=0x7f050008;
-        public static final int w5d3=0x7f050009;
-        public static final int w6d1=0x7f05000a;
-        public static final int w6d2=0x7f05000b;
-        public static final int w6d3=0x7f05000c;
-        public static final int w7=0x7f05000d;
-        public static final int w8=0x7f05000e;
-        public static final int w9=0x7f05000f;
+        public static final int w1=0x7f050004;
+        public static final int w2=0x7f050005;
+        public static final int w3=0x7f050006;
+        public static final int w4=0x7f050007;
+        public static final int w5d1=0x7f050008;
+        public static final int w5d2=0x7f050009;
+        public static final int w5d3=0x7f05000a;
+        public static final int w6d1=0x7f05000b;
+        public static final int w6d2=0x7f05000c;
+        public static final int w6d3=0x7f05000d;
+        public static final int w7=0x7f05000e;
+        public static final int w8=0x7f05000f;
+        public static final int w9=0x7f050010;
     }
 }
