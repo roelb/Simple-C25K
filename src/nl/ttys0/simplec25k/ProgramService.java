@@ -392,6 +392,7 @@ public class ProgramService extends Service {
 
 			MediaPlayer mp = MediaPlayer
 					.create(ProgramService.this, R.raw.beep);
+			//mp.setVolume(0.5f, 0.5f);
 			mp.start();
 
 			// let the user know we're done
@@ -590,7 +591,8 @@ public class ProgramService extends Service {
 	// For sending 'real' notifications (those which can be 'cleaned')
 	// from the bar, I'd suggest using 'sendNotification2()'
 	public void sendNotification(String tickerTxt, String s) {
-		int icon = nl.ttys0.simplec25k.R.drawable.nbarlogo;
+		//int icon = nl.ttys0.simplec25k.R.drawable.nbarlogo;//runner
+		int icon = nl.ttys0.simplec25k.R.drawable.ic_launcher;
 		CharSequence tickerText = tickerTxt;
 
 		final Notification notification = new Notification(icon, tickerText,
