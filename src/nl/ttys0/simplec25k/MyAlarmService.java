@@ -66,8 +66,10 @@ public class MyAlarmService extends Service {
 
 		// play beep
 		MediaPlayer mp = MediaPlayer.create(MyAlarmService.this, R.raw.beep);
-		if(mp!=null)
+		if(mp!=null){
+			//mp.setVolume(leftVolume, rightVolume)
 			mp.start();
+		}
 
 		// vibrate
 		Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);

@@ -22,7 +22,9 @@
 
 package nl.ttys0.simplec25k;
 
+import java.io.File;
 import java.util.HashMap;
+import java.util.StringTokenizer;
 
 import nl.ttys0.simplec25k.R;
 import android.app.Activity;
@@ -34,6 +36,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,6 +53,10 @@ public class TimerActivity extends Activity {
 	public static CountdownChronometer countdown;
 	public static CountdownChronometer totalCountdown;
 	public static Context context;
+	
+	public static boolean mediaSoundBool;
+	public static boolean vibrateBool;
+	public static int mediaSoundVolume;
 
 	private TextView mainTitle;
 	private TextView current;
@@ -68,6 +75,10 @@ public class TimerActivity extends Activity {
 	private Boolean started = false;
 
 	private AlertDialog.Builder skipAlertbox;
+	
+	private static final String SETTINGSFILE = "settings";
+	private WorkoutFileEditor workoutFileEditor = new WorkoutFileEditor(this);
+
 
 	// selected from main
 	public static String selectedProgram;
@@ -76,6 +87,37 @@ public class TimerActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.timer);
+		
+		// test for settings file, if it doesn't exists we'll create it
+		File file = getBaseContext().getFileStreamPath(SETTINGSFILE);
+
+		
+		if (!file.exists()) {
+			workoutFileEditor
+					.WriteSettings(SETTINGSFILE,
+							"mediaSound;true,"
+									+ "mediaSoundVolume;100,"
+									+ "vibrate;true,",
+							MODE_PRIVATE);
+		}
+		//retrieve settings
+				String s[] = workoutFileEditor.ReadSettings(SETTINGSFILE).split(",");
+				for (int i = 0; i < s.length; i++) {
+					StringTokenizer tk = new StringTokenizer(s[i], ";");
+					
+					String tmpToken = tk.nextToken();
+					if(tmpToken.equals("mediaSound"))
+							mediaSoundBool = Boolean.valueOf(tk.nextToken());
+					
+					else if(tmpToken.equals("vibrate"))
+						vibrateBool = Boolean.valueOf(tk.nextToken());
+					
+					else if(tmpToken.equals("mediaSoundVolume"))
+						mediaSoundVolume = Integer.parseInt(tk.nextToken());
+							
+				}
+				
+				
 
 		// setup descriptions, there is probably an easier way that I don't know
 		// of:)
@@ -288,7 +330,7 @@ public class TimerActivity extends Activity {
 		return super.onKeyDown(keyCode, event);
 	}
 
-	
+	/*
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
@@ -302,7 +344,7 @@ public class TimerActivity extends Activity {
 		startActivityForResult(myIntent, 0);
 	    return true;
 	}
-	
+	*/
 	private void setupAlertboxes() {
 
 		// prepare the startedAlertbox
