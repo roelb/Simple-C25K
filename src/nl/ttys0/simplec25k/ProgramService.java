@@ -31,11 +31,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 
 public class ProgramService extends Service {
 	private static final String SCHEDULEFILE = "schedule";
@@ -49,6 +51,11 @@ public class ProgramService extends Service {
 	private PendingIntent pi;
 	private MyReceiver myReceiver;
 	private AlarmManager alarmManager;
+	private SharedPreferences sharedPrefs;
+	
+	private boolean mediaSoundBool;
+	private boolean vibrateBool;
+	private float mediaSoundVolume;
 
 	private int totalTimeLeft;
 
@@ -67,6 +74,9 @@ public class ProgramService extends Service {
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(MyAlarmService.MY_ACTION);
 		registerReceiver(myReceiver, intentFilter);
+		
+		//get preferences
+		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 		// Toast.makeText(this, "program Service Started", Toast.LENGTH_LONG)
 		// .show();
@@ -390,18 +400,23 @@ public class ProgramService extends Service {
 				e.printStackTrace();
 			}
 
+			mediaSoundVolume = (float)(Integer.parseInt(sharedPrefs.getString("volume_percentage","40"))/100f);
+			mediaSoundBool= sharedPrefs.getBoolean("enable_sound", true);
 			MediaPlayer mp = MediaPlayer
 					.create(ProgramService.this, R.raw.beep);
-			if(mp!=null){
-				//mp.setVolume(0.1f, 0.1f);
+			if(mp!=null && mediaSoundBool){
+				mp.setVolume(mediaSoundVolume, mediaSoundVolume);
 				mp.start();
 			}
 
 			// let the user know we're done
 			// setup vibrator
-			Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-			long[] pat = { 0, 700, 400 };
-			v.vibrate(pat, -1);
+			vibrateBool = sharedPrefs.getBoolean("enable_vibrations", true);
+			if(vibrateBool){
+				Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+				long[] pat = { 0, 700, 400 };
+				v.vibrate(pat, -1);
+			}
 
 			// update file
 			String s = wfe.ReadSettings(SCHEDULEFILE);

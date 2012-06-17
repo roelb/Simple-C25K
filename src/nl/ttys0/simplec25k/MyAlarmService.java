@@ -26,14 +26,22 @@ package nl.ttys0.simplec25k;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 
 public class MyAlarmService extends Service {
 
 	protected static final String MY_ACTION = "MY_ACTION";
 	public static String message;
+	
+	private SharedPreferences sharedPrefs;
+	private boolean mediaSoundBool;
+	private boolean vibrateBool;
+	private float mediaSoundVolume;
+
 
 	@Override
 	public void onCreate() {
@@ -63,18 +71,27 @@ public class MyAlarmService extends Service {
 
 		// retrieve workout info
 		// message = intent.getStringExtra("MESSAGE");
+		
+		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-		// play beep
-		MediaPlayer mp = MediaPlayer.create(MyAlarmService.this, R.raw.beep);
-		if(mp!=null){
-			//mp.setVolume(leftVolume, rightVolume)
+		
+		mediaSoundVolume = (float)(Integer.parseInt(sharedPrefs.getString("volume_percentage","40"))/100f);
+		mediaSoundBool= sharedPrefs.getBoolean("enable_sound", true);
+		MediaPlayer mp = MediaPlayer
+				.create(MyAlarmService.this, R.raw.beep);
+		if(mp!=null && mediaSoundBool){
+			mp.setVolume(mediaSoundVolume, mediaSoundVolume);
 			mp.start();
 		}
 
-		// vibrate
-		Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-		long[] pat = { 0, 700, 700 };
-		v.vibrate(pat, -1);
+		// let the user know we're done
+		// setup vibrator
+		vibrateBool = sharedPrefs.getBoolean("enable_vibrations", true);
+		if(vibrateBool){
+			Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+			long[] pat = { 0, 700, 400 };
+			v.vibrate(pat, -1);
+		}
 
 	}
 

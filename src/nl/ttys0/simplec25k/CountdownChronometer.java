@@ -26,7 +26,6 @@ import android.os.Message;
 import android.os.SystemClock;
 //import android.text.format.DateUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.Chronometer;
 
 public class CountdownChronometer extends Chronometer {
@@ -281,7 +280,7 @@ public class CountdownChronometer extends Chronometer {
 				text = mFormatBuilder.toString();
 			} catch (IllegalFormatException ex) {
 				if (!mLogged) {
-					Log.w(TAG, "Illegal format string: " + mFormat);
+					// Log.w(TAG, "Illegal format string: " + mFormat);
 					mLogged = true;
 				}
 			}
