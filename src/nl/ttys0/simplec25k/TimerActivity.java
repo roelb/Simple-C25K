@@ -31,8 +31,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -55,18 +57,14 @@ public class TimerActivity extends Activity {
 	private TextView description;
 	private MyReceiver myReceiver;
 	private HashMap<String, String> hashMap = new HashMap<String, String>();
-	private AlertDialog.Builder startedAlertbox;
-	private AlertDialog.Builder completedAlertbox;
-	private AlertDialog.Builder stopAlertbox;
-
+	private SharedPreferences prefs;
+	
 	private Button startButton;
 	private Button pauseButton;
 	private Button skipButton;
 
 	private Boolean paused = false;
 	private Boolean started = false;
-
-	private AlertDialog.Builder skipAlertbox;
 
 	// selected from main
 	public static String selectedProgram;
@@ -76,6 +74,7 @@ public class TimerActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.timer);
 
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		// setup descriptions, there is probably an easier way that I don't know
 		// of:)
 		Resources res = getResources();
@@ -116,8 +115,6 @@ public class TimerActivity extends Activity {
 		hashMap.put("w9d3", res.getString(R.string.w9));
 
 		TimerActivity.context = this;
-
-		setupAlertboxes();
 
 		// Register BroadcastReceiver
 		// to receive event from our service
@@ -178,25 +175,41 @@ public class TimerActivity extends Activity {
 
 	}
 
-	@Override
-	protected void onResume() {
+	private void sendIntent(String intent) {
+		Intent i = new Intent();
+		i.setAction(MY_ACTION);
+		i.putExtra("DATA_TO_PS", intent);
+		sendBroadcast(i);
+	}
 
-		super.onResume();
-
+	void stop() {
+		if (prefs.getBoolean("show_alerts", true)) {
+			new AlertDialog.Builder(this)
+				.setMessage("Are you sure you want to exit?")
+				.setCancelable(false)
+				.setPositiveButton("Yes",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							sendIntent("STOP");
+							finish();
+						}
+					})
+				.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				})
+				.show();
+		} else {
+			sendIntent("STOP");
+			finish();
+		}
 	}
 
 	@Override
 	protected void onDestroy() {
 		unregisterReceiver(myReceiver);
 		super.onDestroy();
-	}
-
-	@Override
-	protected void onPause() {
-
-		// unregisterReceiver(myReceiver);
-
-		super.onPause();
 	}
 
 	// ===========================================================
@@ -225,7 +238,7 @@ public class TimerActivity extends Activity {
 				startService(svcIntent);
 
 			} else
-				stopAlertbox.show();
+				stop();
 		}
 	};
 
@@ -243,11 +256,7 @@ public class TimerActivity extends Activity {
 				// disable skipbutton
 				skipButton.setClickable(false);
 
-				// send pause broadcast
-				Intent myIntent = new Intent();
-				myIntent.setAction(MY_ACTION);
-				myIntent.putExtra("DATA_TO_PS", "PAUSE");
-				sendBroadcast(myIntent);
+				sendIntent("PAUSE");
 
 				countdown.stop();
 				totalCountdown.stop();
@@ -260,11 +269,7 @@ public class TimerActivity extends Activity {
 
 				skipButton.setClickable(true);
 
-				Intent myIntent = new Intent();
-				myIntent.setAction(MY_ACTION);
-				myIntent.putExtra("DATA_TO_PS", "RESUME");
-				sendBroadcast(myIntent);
-
+				sendIntent("RESUME");
 			}
 
 		}
@@ -273,7 +278,25 @@ public class TimerActivity extends Activity {
 	// skip button
 	View.OnClickListener mSkipListener = new OnClickListener() {
 		public void onClick(View v) {
-			skipAlertbox.show();
+			if (prefs.getBoolean("show_alerts", true)) {
+				new AlertDialog.Builder(TimerActivity.this)
+					.setMessage("Are you sure you want to skip?")
+					.setCancelable(false)
+					.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								sendIntent("SKIP");
+							}
+						})
+					.setNegativeButton("No", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.cancel();
+						}
+					})
+					.show();
+			} else {
+				sendIntent("SKIP");
+			}
 		}
 	};
 
@@ -281,8 +304,7 @@ public class TimerActivity extends Activity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-
-			stopAlertbox.show();
+			stop();
 		}
 		return super.onKeyDown(keyCode, event);
 	}
@@ -302,89 +324,6 @@ public class TimerActivity extends Activity {
 		return true;
 	}
 
-	private void setupAlertboxes() {
-
-		// prepare the startedAlertbox
-		startedAlertbox = new AlertDialog.Builder(this);
-
-		// set the message to display
-		startedAlertbox
-				.setMessage("Workout started. Warmup for five minutes.\nGet started!");
-
-		// add a neutral button to the alert box and assign a click listener
-		startedAlertbox.setNeutralButton("Ok",
-				new DialogInterface.OnClickListener() {
-
-					// click listener on the alert box
-					public void onClick(DialogInterface arg0, int arg1) {
-					}
-				});
-
-		// prepare the completedAlertbox, on click the activity will be closed!
-		completedAlertbox = new AlertDialog.Builder(this);
-
-		// set the message to display
-		completedAlertbox.setMessage("Workout finished. Well done!");
-
-		// add a neutral button to the alert box and assign a click listener
-		completedAlertbox.setNeutralButton("Ok",
-				new DialogInterface.OnClickListener() {
-
-					// click listener on the alert box
-					public void onClick(DialogInterface arg0, int arg1) {
-						finish();
-					}
-				});
-
-		// prepare stopAlertbox, yeah I know this could go together with the
-		// skipalertbox
-		stopAlertbox = new AlertDialog.Builder(this);
-		stopAlertbox
-				.setMessage("Are you sure you want to exit?")
-				.setCancelable(false)
-				.setPositiveButton("Yes",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								// send STOP signal
-								Intent myIntent = new Intent();
-								myIntent.setAction(MY_ACTION);
-								myIntent.putExtra("DATA_TO_PS", "STOP");
-								sendBroadcast(myIntent);
-
-								// stop this activity
-								finish();
-							}
-						})
-				.setNegativeButton("No", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-					}
-				});
-
-		// prepare skipalertbox
-		skipAlertbox = new AlertDialog.Builder(this);
-		skipAlertbox
-				.setMessage("Are you sure you want to skip?")
-				.setCancelable(false)
-				.setPositiveButton("Yes",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								// send STOP signal
-								Intent myIntent = new Intent();
-								myIntent.setAction(MY_ACTION);
-								myIntent.putExtra("DATA_TO_PS", "SKIP");
-								sendBroadcast(myIntent);
-
-							}
-						})
-				.setNegativeButton("No", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-					}
-				});
-
-	}
-
 	// class for receiving broadcasts
 	private class MyReceiver extends BroadcastReceiver {
 
@@ -395,10 +334,29 @@ public class TimerActivity extends Activity {
 
 			if (orgData != null) {
 				if (orgData.equals("DONE")) {
-					completedAlertbox.show();
+					if (prefs.getBoolean("show_alerts", true)) {
+						new AlertDialog.Builder(TimerActivity.this)
+							.setMessage("Workout finished. Well done!")
+							.setNeutralButton("Ok",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface arg0, int arg1) {
+										finish();
+									}
+								})
+							.show();
+					} else {
+						finish();
+					}
 				} else if (orgData.equals("STARTED")) {
-					startedAlertbox.show();
-
+					if (prefs.getBoolean("show_alerts", true)) {
+						new AlertDialog.Builder(TimerActivity.this)
+							.setMessage("Workout started. Warmup for five minutes.\nGet started!")
+							.setNeutralButton("Ok",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface arg0, int arg1) {}
+								})
+							.show();
+					}
 				} else if (orgData.contains("SET_CURRENT")) {
 					String[] s = orgData.split(";");
 
