@@ -51,7 +51,6 @@ public class ProgramService extends Service {
 	private PendingIntent pi;
 	private MyReceiver myReceiver;
 	private AlarmManager alarmManager;
-	private SharedPreferences sharedPrefs;
 	
 	private boolean mediaSoundBool;
 	private boolean vibrateBool;
@@ -74,9 +73,6 @@ public class ProgramService extends Service {
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(MyAlarmService.MY_ACTION);
 		registerReceiver(myReceiver, intentFilter);
-		
-		//get preferences
-		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 		// Toast.makeText(this, "program Service Started", Toast.LENGTH_LONG)
 		// .show();
@@ -399,9 +395,12 @@ public class ProgramService extends Service {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			
+			//get preferences
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-			mediaSoundVolume = (float)(Integer.parseInt(sharedPrefs.getString("volume_percentage","40"))/100f);
-			mediaSoundBool= sharedPrefs.getBoolean("enable_sound", true);
+			mediaSoundVolume = (float)(Integer.parseInt(prefs.getString("volume_percentage","40"))/100f);
+			mediaSoundBool= prefs.getBoolean("enable_sound", true);
 			MediaPlayer mp = MediaPlayer
 					.create(ProgramService.this, R.raw.beep);
 			if(mp!=null && mediaSoundBool){
@@ -411,7 +410,7 @@ public class ProgramService extends Service {
 
 			// let the user know we're done
 			// setup vibrator
-			vibrateBool = sharedPrefs.getBoolean("enable_vibrations", true);
+			vibrateBool = prefs.getBoolean("enable_vibrations", true);
 			if(vibrateBool){
 				Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 				long[] pat = { 0, 700, 400 };
