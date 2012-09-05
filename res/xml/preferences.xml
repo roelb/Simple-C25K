@@ -34,7 +34,8 @@
 			android:summary="Enable or disable vibrations"
 			android:title="Vibrate" 
 			android:defaultValue="true"
-		/>		
+		/>
+		<CheckBoxPreference android:key="show_alerts" android:title="Show Alert Dialogs" android:defaultValue="true" android:summary="Enable or disable confirmation alert dialogs"/>		
 	</PreferenceCategory>
 
 	<PreferenceCategory 
