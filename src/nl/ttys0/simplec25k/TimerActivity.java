@@ -123,12 +123,9 @@ public class TimerActivity extends Activity {
 		intentFilter.addAction(ProgramService.MY_ACTION);
 		registerReceiver(myReceiver, intentFilter);
 
-		// get the selected program. If selected program is null it probably
-		// means the main activity is killed. Therefore we start a new main
-		// activity and kill the current timerActivity. It woul probably be
-		// better if this variable would be set the first time starting this
-		// activity. But this works for now
-		selectedProgram = Simplec25kMainActivity.selectedProgram;
+		// get the selected program. It shouldn't ever be null, but just in case, we start a new main
+		// activity and kill the current timerActivity.
+        selectedProgram = getIntent().getStringExtra("selectedProgram");
 		if (selectedProgram == null) {
 			// restart app
 			Intent i = getBaseContext().getPackageManager()

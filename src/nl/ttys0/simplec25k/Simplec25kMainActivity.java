@@ -23,6 +23,7 @@ package nl.ttys0.simplec25k;
 import java.io.File;
 import java.util.StringTokenizer;
 
+import android.util.Log;
 import nl.ttys0.simplec25k.R;
 
 import android.os.Bundle;
@@ -68,18 +69,19 @@ public class Simplec25kMainActivity extends ListActivity {
 		File file = getBaseContext().getFileStreamPath(SCHEDULEFILE);
 
 		if (!file.exists()) {
-			workoutFileEditor
+            Log.d("Simple", "Schedule file not found");
+            workoutFileEditor
 					.WriteSettings(SCHEDULEFILE,
-							"w1d1;false,w1d2;false,w1d3;false,"
-									+ "w2d1;false,w2d2;false,w2d3;false,"
-									+ "w3d1;false,w3d2;false,w3d3;false,"
-									+ "w4d1;false,w4d2;false,w4d3;false,"
-									+ "w5d1;false,w5d2;false,w5d3;false,"
-									+ "w6d1;false,w6d2;false,w6d3;false,"
-									+ "w7d1;false,w7d2;false,w7d3;false,"
-									+ "w8d1;false,w8d2;false,w8d3;false,"
-									+ "w9d1;false,w9d2;false,w9d3;false,",
-							MODE_PRIVATE);
+                            "w1d1;false,w1d2;false,w1d3;false,"
+                                    + "w2d1;false,w2d2;false,w2d3;false,"
+                                    + "w3d1;false,w3d2;false,w3d3;false,"
+                                    + "w4d1;false,w4d2;false,w4d3;false,"
+                                    + "w5d1;false,w5d2;false,w5d3;false,"
+                                    + "w6d1;false,w6d2;false,w6d3;false,"
+                                    + "w7d1;false,w7d2;false,w7d3;false,"
+                                    + "w8d1;false,w8d2;false,w8d3;false,"
+                                    + "w9d1;false,w9d2;false,w9d3;false,",
+                            MODE_PRIVATE);
 		}
 
 		// retrieve the schedule information
@@ -109,10 +111,8 @@ public class Simplec25kMainActivity extends ListActivity {
 
 	// When a choice is made
 	public void onListItemClick(ListView parent, View v, int position, long id) {
-
-		selectedProgram = programStringArr[position];
-
 		Intent myIntent = new Intent(this, TimerActivity.class);
+        myIntent.putExtra("selectedProgram", programStringArr[position]);
 		startActivityForResult(myIntent, 0);
 
 	}
