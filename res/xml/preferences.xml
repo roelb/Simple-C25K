@@ -38,6 +38,18 @@
 		<CheckBoxPreference android:key="show_alerts" android:title="Show Alert Dialogs" android:defaultValue="true" android:summary="Enable or disable confirmation alert dialogs"/>		
 	</PreferenceCategory>
 
+    <PreferenceCategory
+        android:title="Screen"
+        android:key="screen">
+        <ListPreference
+            android:key="wakelock"
+            android:title="Wakelock"
+            android:summary="Choose the type of wakelock. Partial allows the screen to turn off with the timer still running, while dim dims the screen."
+            android:defaultValue="dim"
+            android:entries="@array/wakelockType"
+            android:entryValues="@array/wakelockTypeValues"/>
+        </PreferenceCategory>
+
 	<PreferenceCategory 
 		android:title="Info"
 		android:key="info">
