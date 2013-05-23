@@ -38,6 +38,7 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class ProgramService extends Service {
 	private static final String SCHEDULEFILE = "schedule";
@@ -79,7 +80,19 @@ public class ProgramService extends Service {
 		// Log.d(TAG, "onCreate");
 
 		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-		mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String wakelockType = prefs.getString("wakelock", "dim");
+        Log.d("SimpleC25K", "Wakelock: " + wakelockType);
+
+        if(wakelockType.equals("partial")){
+		    mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
+        }
+        else if(wakelockType.equals("full")){
+            mWakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "TAG");
+        }
+        else{
+            mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "TAG");
+        }
 		mWakeLock.acquire();
 
 	}
